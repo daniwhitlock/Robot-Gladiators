@@ -32,8 +32,6 @@ var fight = function (enemyName) {
                 break;
             }
         }    
-       
-        
         //remove enemy's health by subtracting the amount set in the playerAttack variable
         enemyHealth = enemyHealth - playerAttack;
         console.log(
@@ -99,18 +97,27 @@ var startGame = function() {
     
             // pass the pickedEnemyName variable's value into the fight function, where it will assume the value of the enemyName parameter
             fight(pickedEnemyName);
+
+            //if we're not at the last enemy in the array
+            if (playerHealth > 0 && i < enemyNames.length -1) {
+                //ask if player wants to use the store before next round
+                var storeConfirm = window.confirm("The fight is over, visit the store before the next round");
+
+                //if yes, take them to the store() function 
+                if (storeConfirm) {
+                    shop();
+                }
+            }
         }
-        else {
-            window.alert("You have lost your robot in battle! GAME OVER.");
-            break;
-        }
+        // I think this code is redunant. 
+        // else {
+        //     window.alert("You have lost your robot in battle! GAME OVER.");
+        //     break;
+        // }
     }
     //after the loop ends, player is either out of health or enemies to fight so run endGame function
     endGame();
 };
-
-
-
 
 // Function to end the entire game 
 var endGame = function() {
@@ -134,6 +141,55 @@ var endGame = function() {
     }
 };
 
+var shop = function() {
+    console.log("entered the shop");
+    // Ask player what they would like to do
+    var shopOptionPrompt = window.prompt (
+        "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice."
+    );
+
+    // Use switch to carry out action
+    switch (shopOptionPrompt) {
+        case "REFILL": //new case
+        case "refill":
+            if (playerMoney >= 7) {
+                window.alert("Refilling players health by 20 for 7 dollars.");
+                // Increase health and decrease money
+                playerHealth = playerHealth + 20;
+                playerMoney = playerMoney -7;
+                console.log("Players money is" + playerMoney);
+            }
+            else {
+                window.alert("You don't have enough money!");
+            }
+            break;
+
+        case "UPGRADE": //new case
+        case "upgrade":
+            if (playerMoney >= 7) {
+                window.alert("Upgrading player's attack by 6 for 7 dollars.");
+            //incrase attack and decrease money
+            playerAttack = playerAttack + 6;
+            playerMoney = playerMoney -7;
+            console.log("Players money is" + playerMoney);
+            }
+            else {
+                window.alert ("You don't have enough money!");
+            }
+            break;
+
+        case "LEAVE": //new case
+        case "leave":
+            window.alert("Leaving the store.");
+            //do nothing, so function will end
+            break
+        default: 
+            window.alert("You did not pick a valid option. Try again.");
+            //call shop() again to force player to pick a vlid option
+            shop();
+            break;
+    }
+};
 
 //start the game when page loads
 startGame();
@@ -154,3 +210,4 @@ startGame();
 //  If any other invalid option, call shop() again
 
 
+// 
